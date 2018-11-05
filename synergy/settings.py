@@ -98,6 +98,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Custom authentication - By email
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'account.authentication.EmailAuthBackend',
+]
+
+
 # Sending Emails to console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
