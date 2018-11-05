@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block title %} Your Dashboard {% endblock %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <p>Welcome to Your dashboard {{ request.user.username }} You can <a href="{% url 'edit' %}">Edit Profile</a> or <a href="{% url 'password_change' %}">Change your password</a> </p>
+
+
+{% endblock %}
