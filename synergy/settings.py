@@ -27,11 +27,13 @@ SECRET_KEY = '4(r9mtd4&z8&f)yr!to2yl9%(#)0=y9v799#ia*ell)xqf@7-*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['synergy.com', 'localhost', '127.0.0.1', 'e8f129a7.ngrok.io']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'images.apps.ImagesConfig',
+    'social_django',
     'account.apps.AccountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -103,7 +105,13 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'account.authentication.EmailAuthBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
 ]
+
+# Social Authentication
+SOCIAL_AUTH_FACEBOOK_KEY = '1928741643829477'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'dece48bc9a482555e0e21c80bedc71ea'
+SOCIAL_AUTH_SCOPE = ['email']
 
 
 # Sending Emails to console

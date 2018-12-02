@@ -19,8 +19,14 @@
         <input type="hidden" name="next" value="{{ next }}">
         <p><input type="submit" value="Login"></p>
     </form>
-    <p><a href="{% url 'password_reset' %}">Forgotten Your Password?</a></p>
+    <p><a href="{% url 'password_reset' %}">Forgot Your Password?</a></p>
     <p>Don't have an account? <a href="{% url 'register' %}">Sign Up</a> </p>
+</div>
+
+<div class="social">
+    <ul>
+        <li class="facebook"><a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a> </li>
+    </ul>
 </div>
 
 {% endblock %}
