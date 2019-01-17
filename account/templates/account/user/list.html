@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}People{% endblock %}
+{% block content %}
+<div class="container">
+<h5 class="section-title h1" align="center">People</h5>
+    <div class="row">
+
+        <!--Users-->
+    {% for user in users %}
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card">
+                            <div class="card-body text-center">
+
+                                <a href="{{ user.get_absolute_url }}">
+                                    {% thumbnail user.profile.photo "180x180" crop="100%" as im %}
+                                    <p><img class="img-fluid" src="{{ im.url }}" alt="card image"></p>
+                                    {% endthumbnail %}
+                                </a>
+                                <h4 class="card-title">
+                                    {{ user.get_full_name }}
+                                </h4>
+                                <p class="card-text">{{ user.profile.bio | truncatewords:20 }}</p>
+                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="backside">
+
+                        <div class="card">
+                            <div class="card-body text-center mt-4">
+                                <h4 class="card-title"><a href="{{ user.get_absolute_url }}">{{ user.get_full_name }}
+                                </a></h4>
+                                <p>{{ user.profile.bio }}</p>
+
+<!--TODO:link all social to social media profiles of users-->
+                                <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a class="social-icon text-xs-center" target="_blank" href="">
+                                        <i class="fa fa-facebook"></i>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="social-icon text-xs-center" target="_blank" href="">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="social-icon text-xs-center" target="_blank" href="">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+
+                            </ul>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
+    </div>

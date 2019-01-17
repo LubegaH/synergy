@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block title %}{{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+
+    <div class="container main-secction">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 image-section">
+                <!--<img src="http://nicesnippets.com/demo/Nature-Night-Sky-Stars-Blurred-Light-Show-Mountains-WallpapersByte-com-1920x1080.jpg">-->
+                {% thumbnail user.profile.cover_photo "1920x720" crop="100%" as im %}
+                    <img src="{{ im.url }}">
+                {% endthumbnail %}
+            </div>
+            <div class="row user-left-part">
+                <div class="col-md-3 col-sm-3 col-xs-12 user-profil-part pull-left">
+                    <div class="row ">
+                        <div class="col-md-12 col-md-12-sm-12 col-xs-12 user-image text-center">
+                            <!--<img src="http://nicesnippets.com/demo/1499344631_malecostume.png">-->
+                            {% thumbnail user.profile.photo "180x180" crop="100%" as im %}
+                                <img src="{{ im.url }}">
+                            {% endthumbnail %}
+                        </div>
+                        <div class="row user-detail-row">
+            {% with total_followers=user.followers.count %}
+                            <div class="col-md-12 col-sm-12 user-detail-section2 pull-left">
+                                <p>FOLLOWERS</p>
+                                <span>{{ total_followers }}</span>
+                            </div>
+                            <div class="col-md-12 col-sm-12 user-detail-section2 pull-right">
+                                <div class="border"></div>
+                                <!--TODO: Find out how to implement this-->
+                                <p>FOLLOWING</p>
+                                <span>147</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-12 pull-right profile-right-section">
+                    <div class="row profile-right-section-row">
+                        <div class="col-md-12 profile-header">
+                            <div class="row">
+                                <div class="col-md-8 col-sm-6 col-xs-6 profile-header-section1 pull-left">
+                                    <h1>{{ user.get_full_name }}</h1>
+                                    <p>{{ user.profile.profession }}</p>
+                                </div>
+
+                                <div class="col-md-4 col-sm-6 col-xs-6 profile-header-section1 text-right pull-rigth">
+                                    <!--<button class="btn btn-info req-btn"> FOLLOW</button>-->
+                                    <a href="#" data-id="{{ user.id }}" data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button">
+                                        {% if request.user not in user.followers.all %}
+                                            Follow
+                                        {% else %}
+                                            Unfollow
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div id="image-list" class="image-container">
+                                {% include "images/image/list_ajax.html" with images=user.images_created.all %}
+                            </div>
+
+
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-8  profile-tag-section text-center">-->
+                                    <!--<div class="row">-->
+                                        <!--{% include "images/image/list_ajax.html" with images=user.images_created.all %}-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+
+                                <!--<div class="col-md-4 img-main-rightPart">-->
+                                    <!--<div class="row">-->
+                                        <!--<div class="col-md-12">-->
+                                            <!--<div class="row image-right-part">-->
+                                                <!--<div class="col-md-6 pull-left image-right-detail">-->
+                                                    <!--<p>Most Liked Image</p>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div  class="col-md-12 image-right">-->
+                                            <!--<img src="http://nicesnippets.com/demo/Nature-Night-Sky-Stars-Blurred-Light-Show-Mountains-WallpapersByte-com-1920x1080.jpg">-->
+                                        <!--</div>-->
+                                        <!--<div class="col-md-12 image-right-detail-section2">-->
+                                            <!--<p>Urban planning consulation</p>-->
+                                            <!--<span>Lorem ipsum dolor sit amet, consectetur adipisibj.</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block domready %}
+  $('a.follow').click(function(e){
+    e.preventDefault();
+    $.post('{% url "user_follow" %}',
+      {
+        id: $(this).data('id'),
+        action: $(this).data('action')
+      },
+      function(data){
+        if (data['status'] == 'ok') {
+          var previous_action = $('a.follow').data('action');
+
+          // toggle data-action
+          $('a.follow').data('action',
+            previous_action == 'follow' ? 'unfollow' : 'follow');
+          // toggle link text
+          $('a.follow').text(
+            previous_action == 'follow' ? 'Unfollow' : 'Follow');
+
+          // update total followers
+          var previous_followers = parseInt(
+            $('span.count .total').text());
+          $('span.count .total').text(previous_action == 'follow' ? previous_followers + 1 : previous_followers - 1);
+        }
+      }
+    );
+  });
+{% endblock %}

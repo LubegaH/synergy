@@ -25,4 +25,14 @@ urlpatterns = [
     # Registration url
     path('register/', views.register, name='register'),
 
+    # User list
+    path('users/', views.user_list, name='user_list'),
+
+    # Follow a user url
+    path('users/follow/', views.user_follow, name='user_follow'),
+
+    # User Details
+    path('user/<username>/', views.user_detail, name='user_detail'),
+
+
 ]
